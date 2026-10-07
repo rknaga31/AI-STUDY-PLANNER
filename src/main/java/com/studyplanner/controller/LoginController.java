@@ -115,10 +115,10 @@ public class LoginController {
         btnToggle.setOnAction(e -> toggleMode());
 
         // Quick Demo Accounts Fill for instant testing
-        Button btnDemo = new Button("Quick Fill Demo Account");
+        Button btnDemo = new Button("Quick Fill Demo Account (Batman)");
         btnDemo.setStyle("-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-cursor: hand; -fx-background-radius: 4;");
         btnDemo.setOnAction(e -> {
-            txtUsername.setText("student1");
+            txtUsername.setText("Batman");
             txtPassword.setText("pass123");
         });
 

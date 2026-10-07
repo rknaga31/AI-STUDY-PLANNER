@@ -75,10 +75,19 @@ public class Main extends Application {
     private void seedDemoDataIfEmpty() {
         try {
             StudentDAO studentDAO = new StudentDAO();
-            Student existing = studentDAO.findByUsername("student1");
+            // Migrate student1 to Batman if it was already seeded
+            Student oldStudent = studentDAO.findByUsername("student1");
+            if (oldStudent != null) {
+                studentDAO.updateUsername(oldStudent.getId(), "Batman");
+                oldStudent.setFullName("Batman (Bruce Wayne)");
+                studentDAO.update(oldStudent);
+                System.out.println("[Main] Existing demo student migrated to 'Batman'.");
+            }
+
+            Student existing = studentDAO.findByUsername("Batman");
             if (existing == null) {
                 // Create sample student
-                Student demoStudent = new Student("student1", "pass123", "Naga Raghav", "raghav@university.edu", 4.0);
+                Student demoStudent = new Student("Batman", "pass123", "Batman (Bruce Wayne)", "batman@gotham.edu", 4.0);
                 demoStudent = studentDAO.create(demoStudent);
 
                 SubjectDAO subjectDAO = new SubjectDAO();
@@ -106,7 +115,7 @@ public class Main extends Application {
                 // Auto-generate initial plan for demo student
                 PlanService planService = new PlanService();
                 planService.generateAndSaveDailyPlan(demoStudent.getId(), demoStudent.getTargetDailyHours(), LocalDate.now());
-                System.out.println("[Main] Demo student and academic curriculum successfully seeded.");
+                System.out.println("[Main] Demo student 'Batman' and academic curriculum successfully seeded.");
             }
         } catch (Exception e) {
             System.out.println("[Main] Seed check completed: " + e.getMessage());

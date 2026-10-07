@@ -119,8 +119,9 @@ Or via Maven:
 ---
 
 ## 6. Demo Account Credentials
-
-A sample academic profile is pre-seeded on first run:
-- **Username**: `student1`
+ 
+ A sample academic profile is pre-seeded on first run:
+- **Username**: `Batman`
 - **Password**: `pass123`
+- **Full Name**: `Batman (Bruce Wayne)`
 - Pre-populated with courses: *Java Programming & OOP*, *Data Structures & Algorithms*, *Database Management Systems*, and *Software Engineering*, along with upcoming exam dates.

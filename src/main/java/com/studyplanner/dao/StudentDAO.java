@@ -90,6 +90,16 @@ public class StudentDAO {
         }
     }
 
+    public boolean updateUsername(int studentId, String newUsername) throws SQLException {
+        String sql = "UPDATE Student SET username = ? WHERE id = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newUsername);
+            ps.setInt(2, studentId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     public boolean updateDailyHours(int studentId, double hours) throws SQLException {
         String sql = "UPDATE Student SET target_daily_hours = ? WHERE id = ?";
         try (Connection conn = db.getConnection();
