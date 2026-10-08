@@ -35,57 +35,105 @@ A modular Java desktop application that calculates academic priorities and gener
 
 ---
 
-## 3. Team Contributions & Module Breakdown
+## 3. Functional Module Folders & Documentation
 
-### 1. FRONTEND — JavaFX
-- **Authentication**: `LoginController` with toggling between Sign In and Registration.
-- **Dashboard**: `DashboardController` featuring 4 metric cards, Today's Task checklist, and live PriorityQueue spotlight.
-- **Subject Management**: `SubjectController` displaying difficulty badges, syllabus completion progress bars, and modal dialogs to add/edit subjects and exam deadlines.
-- **Study Plan**: `PlannerController` with daily available hours input, interactive schedule table, and "Why Prioritized?" rule explanations.
-- **Progress Tracking**: `ProgressController` with study session logger, direct topic adjustments, and session history table.
-- **Navigation**: `MainViewController` with a persistent dark sidebar navigation and header bar displaying live DB connection status.
+The codebase is organized into dedicated functional modules, each featuring its own documentation detailing responsibilities, classes, and packages used:
 
-### 2. BACKEND — Java
-- **Services**:
-  - `StudentService`: Input validation, authentication, and profile updates.
-  - `SubjectService`: Subject CRUD and automatic progress synchronization.
-  - `ExamService`: Exam deadline management and nearest exam lookup.
-  - `PlanService`: Orchestrates planning engine, persists generated daily tasks, and handles plan regeneration.
-  - `ProgressService`: Session logging, topic incrementation, and overall syllabus readiness calculation.
-- **Validation**: `ValidationUtil` enforces business rules (difficulty 1–5, email format, study hour bounds, positive topics).
-
-### 3. DATABASE / DBMS — MySQL + JDBC
-- **Schema (`src/main/resources/sql/schema.sql`)**:
-  - `Student`: Primary Key `id`, username, password, target daily hours.
-  - `Subject`: Foreign Key `student_id` $\rightarrow$ `Student(id) ON DELETE CASCADE`.
-  - `Exam`: Foreign Key `subject_id` $\rightarrow$ `Subject(id) ON DELETE CASCADE`.
-  - `StudyTask`: Foreign Keys $\rightarrow$ `Student(id)` and `Subject(id)`.
-  - `Progress`: Tracks completed topics, total topics, percentage, unique per (student, subject).
-  - `StudySession`: Logs session dates, duration in minutes, notes, and topics covered.
-- **DAOs**: Parameterized `PreparedStatement` operations in `StudentDAO`, `SubjectDAO`, `ExamDAO`, `StudyTaskDAO`, `ProgressDAO`, and `StudySessionDAO`.
-- **Connectivity**: `DatabaseConnection` reads from `db.properties`. If MySQL credentials are not yet configured or server is unreachable, it seamlessly operates on an embedded SQLite engine so the prototype can be tested immediately, and allows connecting to MySQL at any time via the UI Settings screen.
-
-### 4. PLANNING ENGINE — Java
-- **Rule-Based Prioritization**:
-  $$\text{Priority Score} = (\text{Difficulty} \times 0.25) + (\text{Urgency} \times 0.35) + (\text{Prep Need} \times 0.25) + (\text{Incomplete Topics} \times 0.15)$$
-- **Java PriorityQueue**:
-  `PriorityCalculator` calculates scores and inserts subjects into `java.util.PriorityQueue<PrioritizedSubject>` which extracts the most critical subjects first.
-- **Transparent Rule Reasoning**:
-  Generates explainable rationale for why each subject is prioritized:
-  > *"Java Programming & OOP is HIGHLY prioritized because its difficulty is high (4/5), preparation is low (25.0% with 9 topics incomplete), and the exam 'Java Midterm Theory Exam' is approaching in 4 days."*
-- **Daily Schedule Generator**:
-  `ScheduleGenerator` allocates available hours across high-priority subjects and outputs structured `StudyTask` items.
-
-### 5. PROGRESS + TESTING — Java
-- **Progress Updates & Plan Regeneration**:
-  When a study session is logged or topics are completed, `PlanService.regeneratePlanForStudent()` re-ranks subjects and updates the day's study tasks.
-- **Automated Tests**:
-  - `PlanningEngineTest`: Validates PriorityCalculator urgency scoring, queue ordering, and time allocation.
-  - `ServiceWorkflowTest`: Validates end-to-end flow: Registration $\rightarrow$ Subject & Exam creation $\rightarrow$ Plan generation $\rightarrow$ Progress update $\rightarrow$ Plan regeneration.
+| Functional Area | Documentation | Core Packages & Directories | Key Responsibilities |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | [**`frontend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/frontend/README.md) | `controller/`, `ui/`, `resources/css/` | JavaFX views, dashboard cards, navigation sidebar, modals, styles. |
+| **Backend** | [**`backend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/backend/README.md) | `service/`, `util/` | Business logic, authentication, profile updates, session context. |
+| **Database & Persistence** | [**`database/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/database/README.md) | `database/`, `dao/`, `resources/sql/` | JDBC connection manager, MySQL + SQLite fallback, DAO CRUD. |
+| **AI Planning Engine** | [**`ai_planning_engine/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/ai_planning_engine/README.md) | `planning/` | Heuristic priority formula, `PriorityQueue`, schedule allocator. |
+| **Models & Entities** | [**`models_and_entities/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/models_and_entities/README.md) | `model/` | Domain entities (`Student`, `Subject`, `Exam`, `StudyTask`, `Progress`). |
 
 ---
 
-## 4. How to Run the Application
+## 4. Team Roles & Responsibilities (5 Roles Explained Simply)
+
+This project was built cooperatively across 5 functional specializations. Here is what each role does in simple, clear terms:
+
+---
+
+### 🎨 Role 1: Frontend Developer (UI & User Experience)
+> *"Builds everything the student sees, clicks, and interacts with on the desktop screen."*
+
+- **Documentation**: [**`frontend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/frontend/README.md)
+- **Folder / Files**: `src/main/java/com/studyplanner/controller/`, `src/main/java/com/studyplanner/ui/`, `src/main/resources/css/style.css`
+- **Key Classes**: [`LoginController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/LoginController.java), [`DashboardController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/DashboardController.java), [`SubjectController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/SubjectController.java), [`PlannerController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/PlannerController.java), [`ProgressController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/ProgressController.java), [`MainViewController`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/controller/MainViewController.java), [`UIHelper`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/ui/UIHelper.java).
+- **Technologies Used**: JavaFX 21 (`TableView`, `GridPane`, `Dialog`, `ProgressBar`, `Spinner`), CSS3 theme (glassmorphism, slate/indigo styling).
+- **What They Delivered**:
+  1. Login & Registration toggle screen with instant field validation.
+  2. Persistent dark sidebar navigation and header bar showing live database connectivity.
+  3. Dashboard with 4 metric cards (Total Subjects, Upcoming Exams, Today's Hours, Syllabus %) and a Priority Spotlight.
+  4. Subject management table with color-coded difficulty badges (1-5), syllabus progress bars, and Add/Edit popup dialogs.
+  5. Interactive study planner view with daily hours spinner and checklist tasks.
+
+---
+
+### ⚙️ Role 2: Backend Developer (Business Logic & Validation)
+> *"The brain of the app that processes student data, enforces academic rules, and connects views to the database."*
+
+- **Documentation**: [**`backend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/backend/README.md)
+- **Folder / Files**: `src/main/java/com/studyplanner/service/`, `src/main/java/com/studyplanner/util/`
+- **Key Classes**: [`StudentService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/StudentService.java), [`SubjectService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/SubjectService.java), [`ExamService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/ExamService.java), [`PlanService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/PlanService.java), [`ProgressService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/ProgressService.java), [`ValidationUtil`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/util/ValidationUtil.java), [`SessionContext`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/util/SessionContext.java).
+- **Technologies Used**: Core Java (JDK 17+), Regex, Singleton Pattern, Transaction Management.
+- **What They Delivered**:
+  1. Input validation enforcing business rules (difficulty 1–5, study hours 0.5–16, email format, non-empty courses).
+  2. Student authentication, credential verification, and thread-safe session tracking.
+  3. Automatic data synchronization (when subjects are created or topics are completed, progress is updated in real time).
+  4. Workflow coordination between user requests, the AI Planning Engine, and persistent storage.
+
+---
+
+### 🗄️ Role 3: Database Engineer (MySQL & JDBC Persistence)
+> *"Designs relational tables, stores all academic records permanently, and guarantees zero data loss."*
+
+- **Documentation**: [**`database/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/database/README.md)
+- **Folder / Files**: `src/main/java/com/studyplanner/database/`, `src/main/java/com/studyplanner/dao/`, `src/main/resources/sql/schema.sql`, `src/main/resources/db.properties`
+- **Key Classes**: [`DatabaseConnection`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/database/DatabaseConnection.java), [`StudentDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/StudentDAO.java), [`SubjectDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/SubjectDAO.java), [`ExamDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/ExamDAO.java), [`StudyTaskDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/StudyTaskDAO.java), [`ProgressDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/ProgressDAO.java), [`StudySessionDAO`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/dao/StudySessionDAO.java).
+- **Technologies Used**: MySQL 8.0, SQLite, JDBC (`PreparedStatement`, `Connection`, `ResultSet`), SQL DDL/DML.
+- **What They Delivered**:
+  1. Designed the relational schema with 6 tables (`Student`, `Subject`, `Exam`, `StudyTask`, `Progress`, `StudySession`) with Foreign Keys and `ON DELETE CASCADE`.
+  2. Built the dual-engine connection manager that connects to MySQL, and automatically falls back to local SQLite if offline.
+  3. Wrote parameterized `PreparedStatement` DAOs for all entities, preventing SQL injection.
+  4. Created 1-click database inspector scripts ([`show_mysql_tables.bat`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/show_mysql_tables.bat), [`view_database.bat`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/view_database.bat)) to present tables to evaluators.
+
+---
+
+### 🧠 Role 4: AI & Planning Algorithm Engineer (PriorityQueue & Scheduling)
+> *"Builds the intelligent heuristic formula that calculates which subject the student should study first today."*
+
+- **Documentation**: [**`ai_planning_engine/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/ai_planning_engine/README.md)
+- **Folder / Files**: `src/main/java/com/studyplanner/planning/`
+- **Key Classes**: [`PriorityCalculator`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/planning/PriorityCalculator.java), [`ScheduleGenerator`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/planning/ScheduleGenerator.java), [`SchedulePlan`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/planning/SchedulePlan.java), [`PrioritizedSubject`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/model/PrioritizedSubject.java).
+- **Technologies Used**: `java.util.PriorityQueue`, Multi-Factor Heuristic Modeling, `Comparable` interface.
+- **What They Delivered**:
+  1. Invented the 4-factor composite priority heuristic formula:
+     $$\text{Priority Score} = (\text{Difficulty} \times 0.25) + (\text{Exam Urgency} \times 0.35) + (\text{Prep Need} \times 0.25) + (\text{Incomplete Topics} \times 0.15)$$
+  2. Used a Java `PriorityQueue<PrioritizedSubject>` to automatically pull highest-urgency courses first in $O(\log n)$ time.
+  3. Built the daily time allocator that splits available hours across courses with min/max caps and break reminders.
+  4. Generated human-readable rule explanations (*"Why Prioritized?"*) so the student understands exactly why an assignment is scheduled.
+
+---
+
+### 🧪 Role 5: Testing & Progress Tracking Engineer (QA & Verification)
+> *"Tests the whole application for bugs, verifies calculation accuracy, and logs study sessions."*
+
+- **Documentation**: [**`models_and_entities/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/models_and_entities/README.md)
+- **Folder / Files**: `src/test/java/com/studyplanner/`, `test.bat`
+- **Key Classes**: [`PlanningEngineTest`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/test/java/com/studyplanner/planning/PlanningEngineTest.java), [`ServiceWorkflowTest`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/test/java/com/studyplanner/service/ServiceWorkflowTest.java), [`ProgressService`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/service/ProgressService.java), [`StudySession`](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/src/main/java/com/studyplanner/model/StudySession.java).
+- **Technologies Used**: JUnit 5 (`@Test`, `Assertions`), Automated regression testing, Batch automation.
+- **What They Delivered**:
+  1. Automated test suite verifying priority score weights, queue ordering, and schedule duration bounds.
+  2. End-to-end integration test validating: Registration $\rightarrow$ Subject & Exam creation $\rightarrow$ Plan generation $\rightarrow$ Progress update $\rightarrow$ Plan regeneration.
+  3. Study session logging system tracking duration in minutes, notes, and topic increments.
+  4. Syllabus progress calculation engine tracking cumulative readiness percentages.
+
+
+---
+
+## 5. How to Run the Application
 
 ### Option A: Quick Launch (Batch File)
 Double-click or run:
@@ -105,7 +153,7 @@ java -jar target\ai-study-planner-1.0.0.jar
 
 ---
 
-## 5. How to Run Unit & Integration Tests
+## 6. How to Run Unit & Integration Tests
 
 Run the test batch file:
 ```cmd
@@ -118,7 +166,7 @@ Or via Maven:
 
 ---
 
-## 6. Demo Account Credentials
+## 7. Demo Account Credentials
  
  A sample academic profile is pre-seeded on first run:
 - **Username**: `Batman`
