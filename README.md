@@ -35,17 +35,17 @@ A modular Java desktop application that calculates academic priorities and gener
 
 ---
 
-## 3. Functional Module Folders & Documentation
+## 3. Team Contribution Folders (5 Separate Roles)
 
-The codebase is organized into dedicated functional modules, each featuring its own documentation detailing responsibilities, classes, and packages used:
+To cleanly demonstrate individual contributions, the codebase provides **5 separate dedicated folders** arranged by function:
 
-| Functional Area | Documentation | Core Packages & Directories | Key Responsibilities |
+| Team Role | Dedicated Folder & Documentation | Core Contents | Key Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **Frontend** | [**`frontend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/frontend/README.md) | `controller/`, `ui/`, `resources/css/` | JavaFX views, dashboard cards, navigation sidebar, modals, styles. |
-| **Backend** | [**`backend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/backend/README.md) | `service/`, `util/` | Business logic, authentication, profile updates, session context. |
-| **Database & Persistence** | [**`database/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/database/README.md) | `database/`, `dao/`, `resources/sql/` | JDBC connection manager, MySQL + SQLite fallback, DAO CRUD. |
-| **AI Planning Engine** | [**`ai_planning_engine/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/ai_planning_engine/README.md) | `planning/` | Heuristic priority formula, `PriorityQueue`, schedule allocator. |
-| **Models & Entities** | [**`models_and_entities/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/models_and_entities/README.md) | `model/` | Domain entities (`Student`, `Subject`, `Exam`, `StudyTask`, `Progress`). |
+| **Role 1: Frontend** | [**`1_frontend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/1_frontend/README.md) | `controllers/`, `ui_components/`, `styles/`, `entrypoints/` | JavaFX views, dashboard cards, navigation sidebar, modals, CSS styling. |
+| **Role 2: Backend** | [**`2_backend/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/2_backend/README.md) | `services/`, `utilities/`, `models/` | Business logic, authentication, input validation, session context. |
+| **Role 3: Database** | [**`3_database/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/3_database/README.md) | `connection/`, `dao/`, `sql_schema/`, `scripts/` | MySQL schema, JDBC connection manager, SQLite fallback, DAOs. |
+| **Role 4: AI Engine** | [**`4_ai_planning_engine/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/4_ai_planning_engine/README.md) | `algorithms/`, `models/` | Multi-factor heuristic formula, `PriorityQueue`, time allocator. |
+| **Role 5: Testing & QA**| [**`5_testing_and_progress/README.md`**](file:///c:/Users/rnaga/.antigravity-ide/studyplanner/5_testing_and_progress/README.md) | `unit_tests/`, `integration_tests/`, `progress_tracking/`, `scripts/` | Automated JUnit 5 tests, study session logger, readiness metrics. |
 
 ---
 
